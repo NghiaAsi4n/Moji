@@ -3,10 +3,10 @@ import { toast } from "sonner";
 import { authService } from "@/services/authService";
 import type { AuthState } from "@/types/store";
 
-export const useAuthStore = create<AuthState>((set, get) => ({
+export const useAuthStore = create<AuthState>((set, get) => ({ //set: cap nhat state, get de lay du lieu trong store
     accessToken: null,
     user: null,
-    loading: false,
+    loading: false, //theo doi trang thai khi goi api
 
     setAccessToken: (accessToken) => {
         set({ accessToken });
@@ -19,7 +19,7 @@ export const useAuthStore = create<AuthState>((set, get) => ({
         try {
             set({ loading: true });
 
-            //  gọi api
+            //goi api tu services
             await authService.signUp(username, password, email, firstName, lastName);
 
             toast.success("Register success! You will be redirected to the login page.");
@@ -27,7 +27,7 @@ export const useAuthStore = create<AuthState>((set, get) => ({
             console.error(error);
             toast.error("Register fail");
         } finally {
-            set({ loading: false });
+            set({ loading: false }); //api da xu ly xong
         }
     },
 
@@ -56,7 +56,7 @@ export const useAuthStore = create<AuthState>((set, get) => ({
             toast.success("Logout successfully!");
         } catch (error) {
             console.error(error);
-            toast.error("Logout fail!");
+            toast.error("Fail to logout. Try again!");
         }
     },
 

@@ -1,3 +1,4 @@
+//mo ta cau truc du lieu backend tra ve
 export interface User {
     _id: string;
     username: string;

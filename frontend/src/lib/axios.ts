@@ -2,8 +2,10 @@ import { useAuthStore } from "@/stores/useAuthStore";
 import axios from "axios";
 
 const api = axios.create({
+    //app chay o development thi axios se gui req den localhost:5001/api, khi build production se goi /api
     baseURL:
         import.meta.env.MODE === "development" ? "http://localhost:5001/api" : "/api",
+    //gui cookie len server (nguoi dung khong bi logout lien tuc)
     withCredentials: true,
 });
 

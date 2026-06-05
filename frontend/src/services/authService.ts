@@ -1,6 +1,7 @@
 import api from "@/lib/axios";
 
 export const authService = {
+    //them vao cac thong tin de dang ky tai khoan
     signUp: async (
         username: string,
         password: string,
@@ -8,8 +9,10 @@ export const authService = {
         firstName: string,
         lastName: string
     ) => {
+        //goi api signup
         const res = await api.post(
             "/auth/signup",
+            //gui kem thong tin body
             { username, password, email, firstName, lastName },
             { withCredentials: true }
         );
@@ -23,7 +26,7 @@ export const authService = {
             { username, password },
             { withCredentials: true }
         );
-        return res.data; // access token
+        return res.data; //access token server gui lai
     },
 
     signOut: async () => {

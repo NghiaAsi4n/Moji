@@ -3,6 +3,7 @@ import SignInPage from "./pages/SignInPage";
 import SignUpPage from "./pages/SignUpPage";
 import ChatAppPage from "./pages/ChatAppPage";
 import { Toaster } from "sonner";
+import ProtectedRoute from "./components/auth/ProtectedRoute";
 
 function App() {
 
@@ -23,11 +24,12 @@ function App() {
             />
 
             {/*protected routes */}
-            {/*to do: tao protected route*/}
-            <Route
-              path="/"
-              element={<ChatAppPage />}
-            />
+            <Route element={<ProtectedRoute />}>
+              <Route
+                path="/"
+                element={<ChatAppPage />}
+              />
+            </Route>
 
           </Route>
         </Routes>
