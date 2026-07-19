@@ -37,7 +37,7 @@ export const protectedRoute = async (req, res, next) => {
       }
     );
   } catch (error) {
-    console.error('Error in authenticaion in middleware:', error);
+    console.error('Error in authentication in middleware:', error);
     return res.status(500).json({ message: 'Internal server error' });
   }
 };

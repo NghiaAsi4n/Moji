@@ -9,7 +9,7 @@ const api = axios.create({
     withCredentials: true,
 });
 
-// gắn access token vào req header
+// gan access token vao req header
 api.interceptors.request.use((config) => {
     const { accessToken } = useAuthStore.getState();
 
@@ -20,13 +20,13 @@ api.interceptors.request.use((config) => {
     return config;
 });
 
-// tự động gọi refresh api khi access token hết hạn
+// tu dong goi refresh api khi access token het han
 api.interceptors.response.use(
     (res) => res,
     async (error) => {
         const originalRequest = error.config;
 
-        // những api không cần check
+        // nhung api khong can check
         if (
             originalRequest.url.includes("/auth/signin") ||
             originalRequest.url.includes("/auth/signup") ||

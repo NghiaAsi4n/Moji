@@ -7,7 +7,7 @@ const ProtectedRoute = () => {
     const [starting, setStarting] = useState(true);
 
     const init = async () => {
-        // có thể xảy ra khi refresh trang
+        // co the xay ra khi refresh trang
         if (!accessToken) {
             await refresh();
         }
