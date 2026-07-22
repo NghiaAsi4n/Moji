@@ -29,7 +29,7 @@ export const signUp = async (req, res) => {
       username,
       hashedPassword,
       email,
-      displayName: `${firstName} ${lastName}`,
+      displayName: `${lastName} ${firstName}`,
     });
 
     //return
@@ -115,5 +115,43 @@ export const signOut = async (req, res) => {
   } catch (error) {
     console.error('Error in signOut:', error);
     return res.status(500).json({ message: 'Internal server error' });
+  }
+};
+
+//tao access token tu refresh token
+export const refreshToken = async (req, res) => {
+  try {
+    //lay refresh token tu cookie
+    const token = req.cookies?.refreshToken;
+    if (!token) {
+      return res.status(401).json({ message: "Token not found" });
+    }
+
+    //so voi refresh token trong db
+    const session = await Session.findOne({ refreshToken: token });
+
+    if (!session) {
+      return res.status(403).json({ message: "Token not valid or expired" });
+    }
+
+    //ktra het han chua
+    if (session.expiresAt < new Date()) {
+      return res.status(403).json({ message: "Token expired" });
+    }
+
+    //tao access token moi
+    const accessToken = jwt.sign(
+      {
+        userId: session.userId,
+      },
+      process.env.ACCESS_TOKEN_SECRET,
+      { expiresIn: ACCESS_TOKEN_TTL }
+    );
+
+    //return
+    return res.status(200).json({ accessToken });
+  } catch (error) {
+    console.error("Error in refreshToken:", error);
+    return res.status(500).json({ message: "Internal server error" });
   }
 };

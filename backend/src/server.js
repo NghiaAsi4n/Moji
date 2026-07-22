@@ -3,9 +3,14 @@ import dotenv from 'dotenv';
 import { connectDB } from './libs/db.js';
 import authRoute from './routes/authRoute.js';
 import userRoute from './routes/userRoute.js';
+import friendRoute from './routes/friendRoute.js';
+import messageRoute from './routes/messageRoute.js';
+import conversationRoute from './routes/conversationRoute.js';
 import cookieParser from 'cookie-parser';
 import { protectedRoute } from './middlewares/authMiddleware.js';
 import cors from 'cors';
+import swaggerUi from 'swagger-ui-express';
+import fs from 'fs';
 
 dotenv.config();
 
@@ -17,14 +22,22 @@ app.use(express.json()); //doc hieu body duoi dang json
 app.use(cookieParser()); //doc cookie tu request
 app.use(cors({ origin: process.env.CLIENT_URL, credentials: true }));
 
+//swagger
+const swaggerDocument = JSON.parse(fs.readFileSync('./src/swagger.json', 'utf-8'));
+app.use('/api/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+
 //public routes
 app.use('/api/auth', authRoute);
 
 //private routes
 app.use(protectedRoute);
 app.use('/api/users', userRoute);
-connectDB();
+app.use('/api/friends', friendRoute);
+app.use('/api/messages', messageRoute);
+app.use('/api/conversations', conversationRoute);
 
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
+connectDB().then(() => {
+  app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
+  });
 });
